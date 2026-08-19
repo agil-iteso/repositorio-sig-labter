@@ -3,7 +3,19 @@
   "semestres": {
     "2026-2": {
       "nombre": "2026-2 (Actual)",
-      "capas": []
+      "capas": [  
+       {
+     "id": "prueba",
+     "nombre": "Capa de prueba",
+     "grupo": "Pruebas",
+     "archivo": "../semestre-2026-2/datos/prueba/prueba.geojson",
+     "visible": true,
+     "fuente": "Prueba manual",
+     "fecha": "2026-08",
+     "autor": "Tu nombre",
+     "escala": "1:50,000"
+    }
+  ]
     }
   }
 }

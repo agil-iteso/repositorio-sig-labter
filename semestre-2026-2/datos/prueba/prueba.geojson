@@ -1,0 +1,15 @@
+{
+"type": "FeatureCollection",
+"name": "prueba",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{"type":"Feature","properties":{"fid":1},"geometry":{"type":"Point","coordinates":[-103.201642965129935,20.309687585300672]}},
+{"type":"Feature","properties":{"fid":2},"geometry":{"type":"Point","coordinates":[-103.183798569368747,20.217617678619604]}},
+{"type":"Feature","properties":{"fid":3},"geometry":{"type":"Point","coordinates":[-103.049965601159869,20.121304487380463]}},
+{"type":"Feature","properties":{"fid":4},"geometry":{"type":"Point","coordinates":[-103.426184945124845,20.259474407068112]}},
+{"type":"Feature","properties":{"fid":5},"geometry":{"type":"Point","coordinates":[-102.666311092294407,20.209244980608929]}},
+{"type":"Feature","properties":{"fid":6},"geometry":{"type":"Point","coordinates":[-102.822449555204784,20.100358975196276]}},
+{"type":"Feature","properties":{"fid":7},"geometry":{"type":"Point","coordinates":[-102.913158566990788,20.325027254896664]}},
+{"type":"Feature","properties":{"fid":8},"geometry":{"type":"Point","coordinates":[-103.302761207776655,20.18970693391126]}}
+]
+}
