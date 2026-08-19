@@ -1,0 +1,111 @@
+name: Sync Data to QGIS Server
+
+# Dispara cuando hay push a main que modifique capas de datos
+on:
+  push:
+    branches: [main]
+    paths: 
+      - 'semestre-**/datos/**'
+      - '!**/*.md'
+      - '!**/CHANGELOG.md'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      # 1. Descargar el código del repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2. Configurar SSH para conectarse al servidor
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "StrictHostKeyChecking no" >> ~/.ssh/config
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      # 3. Conectar y sincronizar datos en servidor
+      - name: Pull latest data on server
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'DEPLOY_SCRIPT'
+          
+          # Navegar al directorio de proyectos QGIS
+          cd /var/www/qgis-projects
+          
+          # Descargar cambios más recientes
+          git pull origin main --quiet
+          
+          # Asegurar que Apache puede leer los archivos
+          find . -type f \( -name "*.shp" -o -name "*.dbf" -o -name "*.prj" -o -name "*.cpg" -o -name "*.shx" \) \
+            -exec chown www-data:www-data {} \;
+          
+          # Asegurar permisos de lectura
+          find . -type f \( -name "*.shp" -o -name "*.dbf" -o -name "*.prj" -o -name "*.cpg" -o -name "*.shx" \) \
+            -exec chmod 644 {} \;
+          
+          # Recargar QGIS Server (Apache)
+          sudo systemctl reload apache2 2>/dev/null || sudo service apache2 reload 2>/dev/null || true
+          
+          # Log de confirmación
+          echo "[$(date +'%Y-%m-%d %H:%M:%S')] ✓ Sincronización completada"
+          
+          DEPLOY_SCRIPT
+
+      # 4. Verificar que la sincronización fue exitosa
+      - name: Verify sync
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'VERIFY'
+          
+          # Verificar que QGIS Server está respondiendo
+          curl -s "http://localhost/qgis_mapserv.fcgi?request=GetCapabilities&service=WMS" \
+            > /dev/null && echo "✓ QGIS Server respondiendo correctamente" || \
+            echo "⚠️ QGIS Server no responde - revisar Apache"
+          
+          VERIFY
+
+      # 5. Notificar éxito
+      - name: Success notification
+        if: success()
+        run: |
+          echo "✅ Sincronización exitosa"
+          echo "Cambios disponibles en el visor web en: http://${{ secrets.SERVER_IP }}"
+
+      # 6. Notificar fallo
+      - name: Failure notification
+        if: failure()
+        run: |
+          echo "❌ Error en la sincronización - revisar logs"
+          exit 1
+
+# ============================================
+# GUÍA DE CONFIGURACIÓN
+# ============================================
+#
+# 1. Crear SSH key (ejecutar en tu terminal):
+#    ssh-keygen -t rsa -b 4096 -f ~/.ssh/qgis-deploy-key
+#    
+# 2. Copiar clave pública al servidor:
+#    ssh-copy-id -i ~/.ssh/qgis-deploy-key.pub usuario@tu-servidor.mx
+#
+# 3. En GitHub → Settings → Secrets and variables → Actions → New repository secret:
+#    
+#    DEPLOY_KEY = [contenido de ~/.ssh/qgis-deploy-key (PRIVADA)]
+#    SERVER_IP = [IP o hostname del servidor, ej: sig.iteso.mx]
+#    SERVER_USER = [usuario SSH, ej: ubuntu]
+#
+# 4. Verificar conectividad:
+#    ssh -i ~/.ssh/qgis-deploy-key usuario@tu-servidor.mx "cd /var/www/qgis-projects && pwd"
+#
+# 5. Hacer commit de este archivo en tu repo:
+#    git add .github/workflows/sync-qgis-server.yml
+#    git commit -m "Add automatic QGIS Server sync"
+#    git push origin main
+#
+# ¡Listo! Ahora cada push que toque archivos en semestre-*/datos/ 
+# sincronizará automáticamente al servidor.
