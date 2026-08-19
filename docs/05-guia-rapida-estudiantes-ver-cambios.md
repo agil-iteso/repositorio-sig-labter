@@ -7,13 +7,13 @@ Tu PC (QGIS)
     ↓
 Editas y guardas capas
     ↓
+Exportas a GeoJSON (Export → Save Features As)
+    ↓
 git commit + git push
     ↓
-[AUTOMÁTICO - ~30 segundos]
+[AUTOMÁTICO - unos segundos]
     ↓
-GitHub Actions sincroniza
-    ↓
-QGIS Server se actualiza
+GitHub Pages reconstruye el sitio
     ↓
 Visor web muestra tus cambios ✓
 ```
@@ -26,7 +26,7 @@ Visor web muestra tus cambios ✓
 
 ```bash
 # Abre tu proyecto QGIS
-qgis semestre-2024-2/qgis-projects/amg-base.qgs
+qgis semestre-2026-2/qgis-projects/amg-base.qgs
 ```
 
 - Selecciona la capa que quieres editar
@@ -34,17 +34,23 @@ qgis semestre-2024-2/qgis-projects/amg-base.qgs
 - Edita (añade polígonos, puntos, líneas)
 - **Guarda** (Ctrl+S)
 
-### 2️⃣ Sube a GitHub
+### 2️⃣ Exporta a GeoJSON
+
+- Clic derecho en la capa → **Export → Save Features As...**
+- Format: `GeoJSON`, CRS: `EPSG:4326`
+- Guarda sobre el mismo archivo `.geojson` de la capa
+
+### 3️⃣ Sube a GitHub
 
 ```bash
 # En terminal:
-cd /ruta/a/repositorio-sig-iteso
+cd /ruta/a/repositorio-sig-labter
 
 # Ver qué cambió
 git status
 
 # Preparar cambios
-git add semestre-2024-2/datos/[tu-carpeta]/
+git add semestre-2026-2/datos/[tu-carpeta]/
 
 # Guardar con mensaje descriptivo
 git commit -m "Actualizada vialidad: nuevas calles zona norte"
@@ -55,45 +61,39 @@ git push origin main
 
 ✅ **¡Listo! Tus cambios están en GitHub**
 
-### 3️⃣ Espera 30 segundos (automático)
+### 4️⃣ Espera unos segundos (automático)
 
-GitHub Actions automáticamente:
-- ✓ Descarga tus cambios
-- ✓ Los copia al servidor QGIS
-- ✓ Refresca el visor web
+GitHub Pages reconstruye el sitio solo cuando detecta el push — normalmente toma entre 20 segundos y 2 minutos.
 
-### 4️⃣ Abre el visor web
+### 5️⃣ Abre el visor web
 
-Accede a: **http://sig.tu-dominio.local** (o la URL que te dé el profesor)
+Accede a: **https://agil-iteso.github.io/repositorio-sig-labter/visor-web/**
 
-- Espera 5 segundos a que cargue
+- Si ya lo tenías abierto, refresca con `Ctrl+F5` (recarga forzada, evita que el navegador use una copia en caché)
 - ¡Verás tus cambios reflejados! 🎉
 
 ---
 
 ## Verificar que funcionó
 
-### ✅ Forma 1: Ver en GitHub Actions
+### ✅ Forma 1: Ver en GitHub → Settings → Pages
 
 1. Abre tu repo en GitHub
-2. Click en **Actions** (pestaña)
-3. Ver workflow **"Sync Data to QGIS Server"**
-4. Click en el último run
-5. Ver estado: **✓ passed** (verde) = éxito
+2. **Settings → Pages**
+3. Debajo del selector de rama verás "Your site is live at..." con la fecha de la última publicación
 
 ### ✅ Forma 2: Ver en visor web
 
-1. Abre http://sig.tu-dominio.local
-2. Selecciona la capa que editaste
-3. ¿Ves tus cambios? ¡Funcionó! ✓
+1. Abre el visor web
+2. Selecciona la capa que editaste en la lista lateral
+3. ¿Ves tus cambios en el mapa? ¡Funcionó! ✓
 
 ### ❌ Si no ves cambios
 
-**Espera 1 minuto** (a veces GitHub Actions tarda un poco)
-
-Si sigue sin aparecer:
-1. Verifica en GitHub Actions si hay error rojo
-2. Contacta al profesor con el link del workflow error
+1. Revisa que tu capa esté registrada en `visor-web/config.json` (con la ruta correcta al `.geojson`)
+2. Haz `Ctrl+F5` para forzar recarga sin caché
+3. Espera 1-2 minutos más
+4. Contacta al profesor si sigue sin aparecer
 
 ---
 
@@ -124,23 +124,23 @@ Si sigue sin aparecer:
   ✗ "cambios"
   ```
 
-- 🚫 **No hagas push sin guardar en QGIS:**
-  Siempre guarda tus capas en QGIS primero (Ctrl+S)
+- 🚫 **No hagas push sin exportar a GeoJSON primero:**
+  Si solo actualizas el shapefile, el visor web NO va a mostrar tus cambios (lee `.geojson`, no `.shp`).
 
 ---
 
 ## Preguntas Frecuentes
 
-**P: ¿Cuánto tarda en verse en el visor?**  
-R: 30-60 segundos desde que haces `git push`
+**P: ¿Cuánto tarda en verse en el visor?**
+R: 20 segundos a 2 minutos desde que haces `git push`.
 
-**P: ¿Qué pasa si otro estudiante edita la misma capa?**  
+**P: ¿Qué pasa si otro estudiante edita la misma capa?**
 R: Git puede alertarte de conflictos. Avisa al profesor.
 
-**P: ¿Puedo revertir mis cambios?**  
+**P: ¿Puedo revertir mis cambios?**
 R: Sí. Pregunta al profesor cómo usar `git revert` o `git reset`
 
-**P: ¿Se pierden mis cambios?**  
+**P: ¿Se pierden mis cambios?**
 R: No. Git guarda TODO el historial. Siempre se puede recuperar.
 
 ---

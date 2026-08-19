@@ -127,7 +127,7 @@ Tu data actual en Git está en shapefile. GeoNode los importa automáticamente:
 
 ```bash
 # Desde el repo Fase 1:
-cd /ruta/a/repositorio-sig-iteso/
+cd /ruta/a/repositorio-sig-labter/
 
 # Crear lista de archivos .shp
 find . -name "*.shp" > capas-a-importar.txt

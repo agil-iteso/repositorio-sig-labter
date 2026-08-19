@@ -349,10 +349,10 @@ Estudiantes →[editan en QGIS local]→ git push
 
 ```bash
 # En terminal tu PC:
-mkdir repositorio-sig-iteso
-cd repositorio-sig-iteso
+mkdir repositorio-sig-labter
+cd repositorio-sig-labter
 git init
-git remote add origin https://github.com/ITESO/repositorio-sig-iteso.git
+git remote add origin https://github.com/agil-iteso/repositorio-sig-labter.git
 
 # Crear estructura base
 mkdir -p semestre-2024-2/datos/{uso-suelo,vialidad}
@@ -460,8 +460,8 @@ ssh ubuntu@sig.iteso.mx "cd /var/www/qgis-projects && pwd"
 
 ```bash
 # En su PC
-git clone https://github.com/ITESO/repositorio-sig-iteso.git
-cd repositorio-sig-iteso
+git clone https://github.com/agil-iteso/repositorio-sig-labter.git
+cd repositorio-sig-labter
 qgis semestre-2024-2/qgis-projects/amg-base.qgs
 
 # Edita una capa (ej: vialidad)

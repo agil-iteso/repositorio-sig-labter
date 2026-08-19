@@ -9,9 +9,9 @@ Este es el **plan consolidado final** (fusiona el plan original + el ajuste de s
 
 - [ ] Crear repositorio en GitHub (público o privado)
   ```bash
-  mkdir repositorio-sig-iteso && cd repositorio-sig-iteso
+  mkdir repositorio-sig-labter && cd repositorio-sig-labter
   git init
-  git remote add origin https://github.com/ITESO/repositorio-sig-iteso.git
+  git remote add origin https://github.com/agil-iteso/repositorio-sig-labter.git
   ```
 - [ ] Crear estructura base de carpetas (`repositorio-estructura.md`)
 - [ ] Copiar `sync-qgis-server.yml` a `.github/workflows/sync-qgis-server.yml`

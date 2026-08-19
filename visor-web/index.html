@@ -3,50 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visor SIG - ITESO</title>
-    
+    <title>Visor SIG - LABTER ITESO</title>
+
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-    
-    <!-- Leaflet Draw (para edición futura) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-draw/1.0.4/leaflet.draw.css" />
-    
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f5f5f5;
         }
-        
+
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
+
         header h1 {
             font-size: 28px;
             margin-bottom: 5px;
         }
-        
+
         header p {
             font-size: 14px;
             opacity: 0.9;
         }
-        
+
         .container {
             display: grid;
             grid-template-columns: 300px 1fr;
             gap: 0;
             height: calc(100vh - 90px);
         }
-        
+
         .sidebar {
             background: white;
             overflow-y: auto;
@@ -54,20 +51,20 @@
             padding: 20px;
             box-shadow: 2px 0 4px rgba(0,0,0,0.05);
         }
-        
+
         .map-container {
             position: relative;
         }
-        
+
         #map {
             width: 100%;
             height: 100%;
         }
-        
+
         .form-group {
             margin-bottom: 20px;
         }
-        
+
         .form-group label {
             display: block;
             font-weight: 600;
@@ -75,7 +72,7 @@
             color: #333;
             font-size: 14px;
         }
-        
+
         .form-group select,
         .form-group input {
             width: 100%;
@@ -86,13 +83,13 @@
             background: white;
             cursor: pointer;
         }
-        
+
         .form-group select:hover,
         .form-group select:focus {
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
-        
+
         .layers-list {
             background: #f9f9f9;
             border: 1px solid #ddd;
@@ -101,7 +98,7 @@
             max-height: 400px;
             overflow-y: auto;
         }
-        
+
         .layer-item {
             display: flex;
             align-items: center;
@@ -114,25 +111,30 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        
+
         .layer-item:hover {
             background: #f0f0f0;
             border-color: #667eea;
         }
-        
+
         .layer-item input[type="checkbox"] {
             margin-right: 10px;
             cursor: pointer;
             width: 16px;
             height: 16px;
         }
-        
+
         .layer-item.active {
             background: #e8f0fe;
             border-color: #667eea;
             font-weight: 500;
         }
-        
+
+        .layer-item.error {
+            border-color: #e74c3c;
+            color: #e74c3c;
+        }
+
         .metadata {
             background: #f9f9f9;
             border: 1px solid #ddd;
@@ -143,17 +145,17 @@
             line-height: 1.6;
             margin-top: 20px;
         }
-        
+
         .metadata h4 {
             color: #333;
             margin-bottom: 8px;
             font-size: 13px;
         }
-        
+
         .metadata p {
             margin: 4px 0;
         }
-        
+
         .info-badge {
             display: inline-block;
             background: #667eea;
@@ -164,13 +166,20 @@
             font-weight: 600;
             margin-top: 10px;
         }
-        
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 10px;
+            color: #999;
+            font-size: 13px;
+        }
+
         .loading {
             text-align: center;
             padding: 20px;
             color: #999;
         }
-        
+
         .spinner {
             display: inline-block;
             width: 16px;
@@ -181,62 +190,37 @@
             animation: spin 1s linear infinite;
             margin-right: 8px;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
-        .legend {
-            background: white;
-            padding: 10px;
-            border-radius: 4px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            font-size: 12px;
-        }
-        
+
         /* Responsive */
         @media (max-width: 768px) {
             .container {
                 grid-template-columns: 1fr;
             }
-            
+
             .sidebar {
                 display: none;
-            }
-            
-            .toggle-sidebar {
-                position: fixed;
-                top: 100px;
-                left: 10px;
-                z-index: 1000;
-                background: #667eea;
-                color: white;
-                border: none;
-                padding: 10px 15px;
-                border-radius: 4px;
-                cursor: pointer;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>🗺️ Visor SIG Metropolitano</h1>
-        <p>Instituto Metropolitano de Planeación - ITESO</p>
+        <h1>🗺️ Visor SIG</h1>
+        <p>PAP Territorio - LABTER ITESO</p>
     </header>
-    
+
     <div class="container">
         <div class="sidebar">
             <div class="form-group">
                 <label>📅 Semestre</label>
-                <select id="semestreSelect">
-                    <option value="2024-2">2024-2 (Actual)</option>
-                    <option value="2024-1">2024-1</option>
-                    <option value="2023-2">2023-2</option>
-                </select>
+                <select id="semestreSelect"></select>
             </div>
-            
+
             <div class="form-group">
                 <label>🎯 Capas Disponibles</label>
                 <div class="layers-list" id="layersList">
@@ -246,7 +230,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="metadata" id="metadata" style="display:none;">
                 <h4>ℹ️ Información de Capa</h4>
                 <p><strong>Capa:</strong> <span id="metadataLayer">-</span></p>
@@ -257,184 +241,156 @@
                 <span class="info-badge" id="metadataStatus">-</span>
             </div>
         </div>
-        
+
         <div class="map-container">
             <div id="map"></div>
         </div>
     </div>
-    
+
     <!-- Leaflet JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-draw/1.0.4/leaflet.draw.js"></script>
-    
+
     <script>
         // ============================================
-        // CONFIGURACIÓN
+        // Este visor NO depende de ningún servidor.
+        // Lee visor-web/config.json (lista de capas) y
+        // carga cada capa directamente desde su archivo
+        // .geojson dentro del repositorio.
         // ============================================
-        
-        const CONFIG = {
-            // Actualiza con tu servidor QGIS
-            wmsServer: 'http://sig.tu-dominio.local/qgis_mapserv.fcgi',
-            // O si usas Docker: 'http://localhost:8080/qgis_mapserv.fcgi'
-            
-            semestres: {
-                '2024-2': {
-                    proyecto: 'amg-base.qgs',
-                    nombre: '2024-2 (Actual)',
-                    capas: [
-                        {
-                            nombre: 'Uso de Suelo',
-                            id: 'uso-suelo',
-                            grupo: 'Base',
-                            visible: true,
-                            fuente: 'INEGI 2024',
-                            fecha: '2024-06',
-                            autor: 'Estudiantes SIG 2024-2',
-                            escala: '1:50,000'
-                        },
-                        {
-                            nombre: 'Límites Administrativos',
-                            id: 'limites-administrativos',
-                            grupo: 'Base',
-                            visible: true,
-                            fuente: 'INEGI',
-                            fecha: '2024-01',
-                            autor: 'Base ITESO',
-                            escala: '1:100,000'
-                        },
-                        {
-                            nombre: 'Vialidad Principal',
-                            id: 'vialidad-principal',
-                            grupo: 'Infraestructura',
-                            visible: false,
-                            fuente: 'Trámites ITESO + campo',
-                            fecha: '2024-05',
-                            autor: 'Estudiantes SIG 2024-2',
-                            escala: '1:50,000'
-                        },
-                        {
-                            nombre: 'Riesgo de Inundación',
-                            id: 'inundacion-2024',
-                            grupo: 'Riesgo',
-                            visible: false,
-                            fuente: 'Análisis MDE + precipitación CONAGUA',
-                            fecha: '2024-10',
-                            autor: 'Proyecto SIG Riesgo',
-                            escala: '1:25,000'
-                        },
-                        {
-                            nombre: 'Servicios Públicos - Escuelas',
-                            id: 'escuelas-2024',
-                            grupo: 'Servicios',
-                            visible: false,
-                            fuente: 'CONEVAL + verificación campo',
-                            fecha: '2024-08',
-                            autor: 'Estudiantes SIG 2024-2',
-                            escala: '1:50,000'
-                        }
-                    ]
-                },
-                '2024-1': {
-                    proyecto: 'amg-base.qgs',
-                    nombre: '2024-1',
-                    capas: [
-                        {
-                            nombre: 'Uso de Suelo',
-                            id: 'uso-suelo',
-                            grupo: 'Base',
-                            visible: true,
-                            fuente: 'INEGI 2024',
-                            fecha: '2024-03',
-                            autor: 'Estudiantes SIG 2024-1',
-                            escala: '1:50,000'
-                        },
-                        {
-                            nombre: 'Límites Administrativos',
-                            id: 'limites-administrativos',
-                            grupo: 'Base',
-                            visible: true,
-                            fuente: 'INEGI',
-                            fecha: '2024-01',
-                            autor: 'Base ITESO',
-                            escala: '1:100,000'
-                        }
-                    ]
-                }
-            }
-        };
-        
-        // ============================================
-        // INICIALIZACIÓN DEL MAPA
-        // ============================================
-        
+
         let map = L.map('map').setView([20.6595, -103.2494], 11); // Guadalajara
-        
+
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors',
-            maxZoom: 19,
-            opacity: 0.7
+            maxZoom: 19
         }).addTo(map);
-        
-        let wmsLayers = {};
-        let currentSemestre = '2024-2';
+
+        let CONFIG = null;
+        let geoLayers = {};
+        let currentSemestre = null;
         let currentCapas = new Set();
-        
+
         // ============================================
-        // FUNCIONES
+        // CARGA INICIAL: lee config.json
         // ============================================
-        
+
+        fetch('config.json')
+            .then(r => r.json())
+            .then(data => {
+                CONFIG = data;
+                poblarSelectorSemestres();
+                cargarCapas(CONFIG.semestreActual);
+            })
+            .catch(err => {
+                document.getElementById('layersList').innerHTML =
+                    '<div class="empty-state">⚠️ No se pudo leer config.json. Revisa que el archivo exista en visor-web/.</div>';
+                console.error('Error cargando config.json', err);
+            });
+
+        function poblarSelectorSemestres() {
+            const select = document.getElementById('semestreSelect');
+            select.innerHTML = '';
+            Object.keys(CONFIG.semestres).forEach(key => {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = CONFIG.semestres[key].nombre || key;
+                if (key === CONFIG.semestreActual) opt.selected = true;
+                select.appendChild(opt);
+            });
+        }
+
+        // ============================================
+        // CARGA DE CAPAS DEL SEMESTRE SELECCIONADO
+        // ============================================
+
         function cargarCapas(semestre) {
             currentSemestre = semestre;
             const config = CONFIG.semestres[semestre];
-            
+
             if (!config) {
                 console.error('Semestre no encontrado:', semestre);
                 return;
             }
-            
-            // Limpiar capas anteriores
-            Object.keys(wmsLayers).forEach(id => {
-                map.removeLayer(wmsLayers[id]);
+
+            // Limpiar capas anteriores del mapa
+            Object.keys(geoLayers).forEach(id => {
+                if (geoLayers[id]) map.removeLayer(geoLayers[id]);
             });
-            wmsLayers = {};
+            geoLayers = {};
             currentCapas.clear();
-            
-            // Renderizar lista de capas
-            renderizarCapas(config.capas);
-            
-            // Agregar capas WMS al mapa
+
+            renderizarListaCapas(config.capas);
+
+            if (!config.capas || config.capas.length === 0) {
+                return;
+            }
+
             config.capas.forEach(capa => {
-                const wmsLayer = L.tileLayer.wms(CONFIG.wmsServer, {
-                    layers: capa.id,
-                    styles: '',
-                    format: 'image/png',
-                    transparent: true,
-                    attribution: `${capa.fuente} (${capa.fecha})`
-                });
-                
-                wmsLayers[capa.id] = wmsLayer;
-                
-                if (capa.visible) {
-                    wmsLayer.addTo(map);
-                    currentCapas.add(capa.id);
-                }
+                fetch(capa.archivo)
+                    .then(r => {
+                        if (!r.ok) throw new Error('HTTP ' + r.status);
+                        return r.json();
+                    })
+                    .then(geojson => {
+                        const layer = L.geoJSON(geojson, {
+                            style: { color: '#667eea', weight: 2, fillOpacity: 0.3 },
+                            pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
+                                radius: 6, color: '#667eea', fillColor: '#764ba2', fillOpacity: 0.8
+                            }),
+                            onEachFeature: (feature, lyr) => {
+                                if (feature.properties) {
+                                    const rows = Object.entries(feature.properties)
+                                        .map(([k, v]) => `<strong>${k}:</strong> ${v}`)
+                                        .join('<br>');
+                                    lyr.bindPopup(rows || 'Sin atributos');
+                                }
+                            }
+                        });
+
+                        geoLayers[capa.id] = layer;
+
+                        if (capa.visible) {
+                            layer.addTo(map);
+                            currentCapas.add(capa.id);
+                            try {
+                                const b = layer.getBounds();
+                                if (b.isValid()) map.fitBounds(b, { maxZoom: 15 });
+                            } catch (e) { /* capa sin geometría válida, ignorar */ }
+                        }
+
+                        actualizarEstadoCapa(capa.id, true);
+                    })
+                    .catch(err => {
+                        console.error(`No se pudo cargar la capa ${capa.id} (${capa.archivo})`, err);
+                        marcarCapaConError(capa.id);
+                    });
             });
         }
-        
-        function renderizarCapas(capas) {
+
+        // ============================================
+        // UI: LISTA DE CAPAS
+        // ============================================
+
+        function renderizarListaCapas(capas) {
             const layersList = document.getElementById('layersList');
             layersList.innerHTML = '';
-            
+
+            if (!capas || capas.length === 0) {
+                layersList.innerHTML = '<div class="empty-state">Todavía no hay capas registradas para este semestre.<br><br>Agrégalas en <code>visor-web/config.json</code> conforme las vayan creando (ver <code>docs/02-guia-estudiantes.md</code>).</div>';
+                return;
+            }
+
             const grupos = {};
             capas.forEach(capa => {
-                if (!grupos[capa.grupo]) grupos[capa.grupo] = [];
-                grupos[capa.grupo].push(capa);
+                const g = capa.grupo || 'Sin grupo';
+                if (!grupos[g]) grupos[g] = [];
+                grupos[g].push(capa);
             });
-            
+
             Object.keys(grupos).forEach(grupo => {
                 const grupoDiv = document.createElement('div');
                 grupoDiv.style.marginBottom = '15px';
-                
+
                 const grupoTitle = document.createElement('h3');
                 grupoTitle.textContent = grupo;
                 grupoTitle.style.fontSize = '12px';
@@ -443,77 +399,88 @@
                 grupoTitle.style.marginBottom = '8px';
                 grupoTitle.style.textTransform = 'uppercase';
                 grupoDiv.appendChild(grupoTitle);
-                
+
                 grupos[grupo].forEach(capa => {
                     const capaDiv = document.createElement('div');
                     capaDiv.className = 'layer-item';
+                    capaDiv.id = `item-${capa.id}`;
                     if (capa.visible) capaDiv.classList.add('active');
-                    
+
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.id = `capa-${capa.id}`;
-                    checkbox.checked = capa.visible;
+                    checkbox.checked = !!capa.visible;
                     checkbox.addEventListener('change', (e) => {
                         toggleCapa(capa.id, e.target.checked);
                     });
-                    
+
                     const label = document.createElement('label');
                     label.htmlFor = `capa-${capa.id}`;
                     label.textContent = capa.nombre;
                     label.style.cursor = 'pointer';
                     label.style.margin = '0';
                     label.style.flex = '1';
-                    
+
                     capaDiv.appendChild(checkbox);
                     capaDiv.appendChild(label);
-                    
-                    capaDiv.addEventListener('click', () => {
-                        mostrarMetadatos(capa);
+
+                    capaDiv.addEventListener('click', (e) => {
+                        if (e.target.tagName !== 'INPUT') mostrarMetadatos(capa);
                     });
-                    
+
                     grupoDiv.appendChild(capaDiv);
                 });
-                
+
                 layersList.appendChild(grupoDiv);
             });
         }
-        
+
         function toggleCapa(capaId, visible) {
-            if (wmsLayers[capaId]) {
-                if (visible) {
-                    map.addLayer(wmsLayers[capaId]);
-                    currentCapas.add(capaId);
-                } else {
-                    map.removeLayer(wmsLayers[capaId]);
-                    currentCapas.delete(capaId);
-                }
+            const layer = geoLayers[capaId];
+            if (!layer) return;
+            if (visible) {
+                map.addLayer(layer);
+                currentCapas.add(capaId);
+            } else {
+                map.removeLayer(layer);
+                currentCapas.delete(capaId);
+            }
+            const item = document.getElementById(`item-${capaId}`);
+            if (item) item.classList.toggle('active', visible);
+        }
+
+        function actualizarEstadoCapa(capaId) {
+            const item = document.getElementById(`item-${capaId}`);
+            if (item) item.classList.remove('error');
+        }
+
+        function marcarCapaConError(capaId) {
+            const item = document.getElementById(`item-${capaId}`);
+            if (item) {
+                item.classList.add('error');
+                item.title = 'No se pudo cargar el archivo GeoJSON de esta capa';
             }
         }
-        
+
         function mostrarMetadatos(capa) {
             document.getElementById('metadata').style.display = 'block';
             document.getElementById('metadataLayer').textContent = capa.nombre;
-            document.getElementById('metadataSource').textContent = capa.fuente;
-            document.getElementById('metadataDate').textContent = capa.fecha;
-            document.getElementById('metadataAuthor').textContent = capa.autor;
-            document.getElementById('metadataScale').textContent = capa.escala;
-            
-            // Badge de estado
+            document.getElementById('metadataSource').textContent = capa.fuente || '-';
+            document.getElementById('metadataDate').textContent = capa.fecha || '-';
+            document.getElementById('metadataAuthor').textContent = capa.autor || '-';
+            document.getElementById('metadataScale').textContent = capa.escala || '-';
+
             const badge = document.getElementById('metadataStatus');
-            const estado = currentCapas.has(capa.id) ? 'Visible en mapa' : 'Oculto';
-            badge.textContent = estado;
+            badge.textContent = currentCapas.has(capa.id) ? 'Visible en mapa' : 'Oculto';
         }
-        
+
         // ============================================
         // EVENT LISTENERS
         // ============================================
-        
+
         document.getElementById('semestreSelect').addEventListener('change', (e) => {
             cargarCapas(e.target.value);
         });
-        
-        // Inicializar
-        cargarCapas('2024-2');
     </script>
 </body>
 </html>

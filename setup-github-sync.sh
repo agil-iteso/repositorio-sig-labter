@@ -173,7 +173,7 @@ echo "1. Copia los 3 secrets arriba y pégalos en GitHub"
 echo ""
 
 echo "2. Descarga el archivo de workflow:"
-echo "   curl -o .github/workflows/sync-qgis-server.yml https://raw.githubusercontent.com/ITESO/repositorio-sig-iteso/main/sync-qgis-server.yml"
+echo "   curl -o .github/workflows/sync-qgis-server.yml https://raw.githubusercontent.com/agil-iteso/repositorio-sig-labter/main/sync-qgis-server.yml"
 echo ""
 
 echo "3. Commit y push:"
