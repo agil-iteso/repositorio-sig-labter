@@ -462,7 +462,7 @@ ssh ubuntu@sig.iteso.mx "cd /var/www/qgis-projects && pwd"
 # En su PC
 git clone https://github.com/agil-iteso/repositorio-sig-labter.git
 cd repositorio-sig-labter
-qgis semestre-2024-2/qgis-projects/amg-base.qgs
+qgis semestre-2024-2/qgis-projects/PAP-Labter.qgs
 
 # Edita una capa (ej: vialidad)
 # Guarda en QGIS (Ctrl+S)

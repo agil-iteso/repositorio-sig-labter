@@ -26,7 +26,7 @@ Visor web muestra tus cambios ✓
 
 ```bash
 # Abre tu proyecto QGIS
-qgis semestre-2026-2/qgis-projects/amg-base.qgs
+qgis semestre-2026-2/qgis-projects/PAP-Labter.qgs
 ```
 
 - Selecciona la capa que quieres editar

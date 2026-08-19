@@ -152,6 +152,6 @@ Deberías recibir un XML con las capacidades del servidor WMS.
 ## Próximo Paso
 
 Una vez confirmado que funciona:
-1. Copia tu archivo `.qgs` (proyecto QGIS) a `/var/www/qgis-projects/amg-base.qgs`
-2. Accede a: `http://tu-servidor/qgis_mapserv.fcgi?map=/var/www/qgis-projects/amg-base.qgs&request=GetCapabilities&service=WMS`
+1. Copia tu archivo `.qgs` (proyecto QGIS) a `/var/www/qgis-projects/PAP-Labter.qgs`
+2. Accede a: `http://tu-servidor/qgis_mapserv.fcgi?map=/var/www/qgis-projects/PAP-Labter.qgs&request=GetCapabilities&service=WMS`
 3. El visor Leaflet (paso siguiente) consumirá este servicio WMS

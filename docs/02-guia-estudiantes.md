@@ -52,7 +52,7 @@ cd repositorio-sig-labter
 ```bash
 # Desde la carpeta del repositorio:
 cd semestre-2026-2/qgis-projects/
-qgis amg-base.qgs &
+qgis PAP-Labter.qgs &
 ```
 
 Se abrirá QGIS con todas las capas del semestre.
@@ -186,7 +186,7 @@ Y ya tienes 100% de las capas anteriores disponibles en `semestre-2027-1/`.
 
 ### ❌ "QGIS no encuentra las capas"
 
-**Solución**: Asegúrate de que las rutas en `amg-base.qgs` sean correctas:
+**Solución**: Asegúrate de que las rutas en `PAP-Labter.qgs` sean correctas:
 - En QGIS: **Layer → Layer Properties → Source**
 - Las rutas deben ser **relativas**, no absolutas
 

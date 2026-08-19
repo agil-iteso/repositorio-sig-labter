@@ -43,7 +43,7 @@ Este es el **plan consolidado final** (fusiona el plan original + el ajuste de s
 ## 📅 Semana 2: Estructura de Datos + Metadatos
 
 - [ ] Crear carpeta `semestre-2024-2/` con estructura de capas
-- [ ] Cargar proyecto QGIS base (`amg-base.qgs`) con capas iniciales
+- [ ] Cargar proyecto QGIS base (`PAP-Labter.qgs`) con capas iniciales
 - [ ] Aplicar plantilla de metadatos (`PLANTILLA-METADATA-capa.md`) a cada capa existente
 - [ ] Llenar `metadatos.csv` con inventario inicial
 

@@ -21,7 +21,7 @@ git clone https://github.com/agil-iteso/repositorio-sig-labter.git
 cd repositorio-sig-labter
 
 # 2. Abre QGIS y carga el proyecto base
-qgis semestre-2026-2/qgis-projects/amg-base.qgs
+qgis semestre-2026-2/qgis-projects/PAP-Labter.qgs
 
 # 3. Edita capas y haz cambios
 # (sigue docs/02-guia-estudiantes.md)
@@ -60,7 +60,7 @@ repositorio-sig-labter/
 │
 ├── semestre-2026-2/                   ← ACTUAL
 │   ├── qgis-projects/
-│   │   └── amg-base.qgs              (Proyecto QGIS)
+│   │   └── PAP-Labter.qgs              (Proyecto QGIS)
 │   ├── datos/
 │   │   ├── uso-suelo/                (Capas por categoría)
 │   │   ├── limites-administrativos/
